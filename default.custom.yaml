@@ -1,0 +1,10 @@
+customization:
+  distribution_code_name: ""
+  distribution_version: ""
+  generator: "Rime::SwitcherSettings"
+  modified_time: "Fri Jun 15 10:06:32 2018"
+  rime_version: 1.2.9
+patch:
+  schema_list:
+    - {schema: liur}
+    - {schema: bopomofo_tw}

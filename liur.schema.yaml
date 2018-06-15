@@ -1,0 +1,117 @@
+#錯誤查看%TEMP%\rime.weasel
+# Rime schema settings
+# encoding: utf-8
+#
+# 無蝦米碼碼表
+# 由...製作
+# 修訂於 2013-12-31
+#前面加#字是不執行,後面加#也不執行
+schema:
+# 注意此ID與文件名裏 .schema.yaml 之前的部分相同
+  schema_id: liur
+  name: 蝦米
+  version: "20140123"
+  author:
+    - 制作人
+  description: |
+    無蝦米輸入法-注音.繁體
+  dependencies:
+    - bopomofo
+
+switches:
+  - name: ascii_mode
+    reset: 0
+    states: [ 中文, 英文 ]
+  - name: full_shape
+    states: [ 半形, 全形 ]
+  - name: simplification
+    states: [ 繁體, 简体 ]
+
+engine:		# 輸入引擎設定，即掛接組件的「處方」
+  processors:	# 一、這批組件處理各類按鍵消息
+    - ascii_composer	# ※ 處理西文模式及中西文切換
+    - recognizer	# ※ 與 matcher 搭配，處理符合特定規則的 輸入碼，如 「網址、反查」 等
+    - key_binder	# ※ 在特定條件下將按鍵綁定到其他按鍵，如重定義逗號、句號爲候選翻頁鍵
+    - speller	# ※ 拼寫，字符按鍵，編輯輸入碼,默認只接受小寫拉丁字母作爲輸入碼
+#    - punctuator	# ※ 句讀，將單個字符按鍵直接映射爲「文字︰符號」
+    - selector	# ※ 選字，處理數字選字鍵、上、下候選定位、換頁鍵
+    - navigator	# ※ 輸入欄內的 光標移動鍵
+    - express_editor	# ※ 編輯器，處理空格、回車上屏、回退鍵等
+  segmentors:	# 二、這批組件識別不同內容類型，將 輸入碼 分段
+    - ascii_segmentor	# ※ 標識_西文段落
+    - matcher	# ※ 標識_符合特定規則的段落，如網址、反查等
+    - affix_segmentor@reverse_lookup	#反查掛接
+    - abc_segmentor	# ※ 標識_常規的文字段落
+#    - punct_segmentor	# ※ 標識_句讀段落
+    - fallback_segmentor	# ※ 標識_其他未標識段落
+  translators:	# 三、這批組件翻譯特定類型的編碼段爲一組候選文字
+#    - echo_translator	# ※ 沒有其他候選字時，回顯輸入碼〔輸入碼可以Shift+Enter上屛〕
+#    - punct_translator	# ※ 轉換標點符號
+#    - script_translator	# ※ 腳本翻譯器，用於拼音、粵拼等等基於音節表的輸入方案●此項可加載多個實例，後接@+翻譯器名〔如：pinyin、jyutping等〕
+    - table_translator	#翻譯_打過的字-優先出●碼表翻譯器，用於倉頡、五筆等基於碼表的輸入方案，此項可加載多個實例，後接@+翻譯器名〔如：cangjie、wubi等〕
+    - reverse_lookup_translator  # ※ 反查翻譯器，用另一種編碼方案查碼
+  filters:		# 四、這批組件過濾翻譯的結果
+    - simplifier	# ※ 繁簡轉換
+    - uniquifier	# ※ 過濾重複的候選字，有可能來自繁簡轉換
+    - single_char_filter  #單字優先
+
+menu:		#菜單選項
+  alternative_select_keys: "1234567890"	#重碼選擇鍵，如沒有寫-預設 ctrl+123456789
+  page_size: 7	#選單 每頁 顯示 個數
+
+speller:
+  alphabet: "abcdefghijklmnopqrstuvwxyz,.'[]"
+  delimiter: " "
+
+translator:
+  dictionary: liur
+  spelling_hints: 3	# ～字以內候選標註完整帶調拼音
+  enable_user_dict: true	#是否開啓用戶詞典〔用戶詞典記錄動態字詞頻、用戶詞〕是true否false
+  enable_sentence: true	#是否開啓自動造 句●，是true否false (自動造詞時有太極圖)
+  enable_encoder: true	#是否開啓自動造 詞●，是true否false
+  enable_charset_filter: true	#是否開啓字符集過濾，是true否false
+  encode_commit_history: true	#是否對已上屛詞自動成詞，是true否false
+  max_phrase_length: 10	#最大 自動 成詞 詞長
+
+  preedit_format:	#menu 輸入 字碼 顯示
+    - "xlit|abcdefghijklmnopqrstuvwxyz[];',.|abcdefghijklmnopqrstuvwxyz[];',.|"
+  comment_format:	#menu 提示 字碼 顯示
+    - "xlit|abcdefghijklmnopqrstuvwxyz[];',.|abcdefghijklmnopqrstuvwxyz[];',.|"
+
+#abc_segmentor:
+#  extra_tags:
+#    - reverse_lookup  # 注音用鍵太多（反查碼），無法與嘸蝦米混打
+
+reverse_lookup:
+  dictionary: terra_pinyin
+  prism: bopomofo
+  prefix: "`"
+  suffix: "'"
+  tips: 〔注音〕
+  preedit_format:
+    - "xlit|1qaz2wsxedcrfv5tgbyhnujm8ik,9ol.0p;/- 6347'|ㄅㄆㄇㄈㄉㄊㄋㄌㄍㄎㄏㄐㄑㄒㄓㄔㄕㄖㄗㄘㄙㄧㄨㄩㄚㄛㄜㄝㄞㄟㄠㄡㄢㄣㄤㄥㄦˉˊˇˋ˙ |"
+  comment_format:
+    - xform/\b(\w{1,3})\b/\U$1\E/ # 把 1-3 碼字改為大寫顯示
+recognizer/patterns/reverse_lookup: "`[-,.;/a-z0-9]*'?$"
+
+simplifier:
+  tips: all	# 簡化字模式下提示對應的傳統漢字
+
+punctuator:
+  import_preset: default
+
+key_binder:
+  import_preset: default
+  bindings:
+    - { when: has_menu, accept: comma, send: comma }	#輸入,
+    - { when: has_menu, accept: period, send: period }		# 輸入.
+    - { when: has_menu, accept: minus, send: minus }		# 輸入-
+    - { when: has_menu, accept: equal, send: equal }		# 輸入=
+
+recognizer:		#掛接 輸入法 字碼
+  import_preset: default
+  patterns:
+    email: ^[a-z][-_.0-9a-z]*@.*$	#自動轉換為email
+    url: ^(www[.]|https?:|ftp[.:]|mailto:|file:).*$|^[a-z]+[.].+$
+    reverse_lookup: "`[-.,;/0-9a-z]*'?$"	##掛接反查 輸入法 `字碼
+    upper_case: ^([A-DF-IK-OQ-Z][a-zA-Z0-9]*|[EJP][A-Z0-9]*)$

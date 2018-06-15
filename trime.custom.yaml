@@ -1,0 +1,4 @@
+# trime.custom.yaml  
+patch:
+  "preset_keyboards/qwerty0/height": 66  #高度改为66
+  "preset_keyboards/liur/import_preset": qwerty0   #预设36键布局的ID是qwerty0
