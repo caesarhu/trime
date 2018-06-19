@@ -2,7 +2,8 @@
 patch:
   "preset_keyboards/qwerty0/height": 66  #高度改为66
   "preset_keyboards/bopomofo/height": 66  #高度改为66
-  "style/candidate_text_size": 28  #候选字体大小
+  "style/candidate_view_height": 55  #候选字區高度
+  "style/candidate_text_size": 36  #候选字体大小
   "style/key_text_size": 28
   "style/symbol_text_size": 12
   "preset_keyboards/liur/import_preset": qwerty0   #预设36键布局的ID是qwerty0
